@@ -14,7 +14,6 @@ describe('Number of likes', () => {
   test('returns number of likes with single blog', () => {
     const blogs = singleBlog
     result = listHelper.totalLikes(blogs)
-    console.log('result', result)
     expect(result).toBe(7)
   })
 
