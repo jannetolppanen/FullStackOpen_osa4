@@ -24,7 +24,9 @@ const favoriteBlog = (blogs) => {
     }
     return previous
   }, {})
-  return favourite
+  const { title, author, likes } = favourite
+  const modifiedFavourite = { title, author, likes}
+  return modifiedFavourite
 }
 
   module.exports = {
