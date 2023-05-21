@@ -62,7 +62,7 @@ describe('favoriteBlog', () => {
 })
 
 describe('most liked author', () => {
-  test('returns most liked author and amount of likes with many blogs', () => {
+  test('returns the author with most blogs', () => {
     const blogs = listOfBlogs
     const result = listHelper.mostBlogs(blogs)
     expect(result).toEqual(
@@ -72,7 +72,7 @@ describe('most liked author', () => {
       }
     )
   })
-  test('returns most liked author with single blog', () => {
+  test('returns author with most blogs and array with single blog', () => {
     const blogs = singleBlog
     const result = listHelper.mostBlogs(blogs)
     expect(result).toEqual(
@@ -85,6 +85,32 @@ describe('most liked author', () => {
   test('returns 0 with empty array', () => {
     const blogs = []
     const result = listHelper.mostBlogs(blogs)
+    expect(result).toBe(0)
+  })
+})
+
+describe('most likes', () => {
+  test('returns author with most blogs and number of likes with many blogs in array', () => {
+    const blogs = listOfBlogs
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual({
+        author: "Edsger W. Dijkstra",
+        likes: 17
+    })
+  })
+  test('returns author with most blogs and number of likes with one blog in array', () => {
+    const blogs = singleBlog
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual(
+      {
+        author: "Michael Chan",
+        likes: 7
+      }
+    )
+  })
+  test('returns 0 with empty array', () => {
+    const blogs = []
+    const result = listHelper.mostLikes(blogs)
     expect(result).toBe(0)
   })
 })
