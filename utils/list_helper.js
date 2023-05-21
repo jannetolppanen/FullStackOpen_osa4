@@ -27,10 +27,25 @@ const favoriteBlog = (blogs) => {
   }
 }
 
+const mostBlogs = (blogs) => {
+  if (blogs.length > 0) {
+    const authorWithMostBlogs = _.maxBy(blogs, 'author').author
+    const numberOfBlogs = _.countBy(blogs, { author: authorWithMostBlogs }).true
+    return {
+      author: authorWithMostBlogs,
+      blogs: numberOfBlogs
+    }
+    
+  } else {
+    return 0
+  }
+}
+
 
 
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }

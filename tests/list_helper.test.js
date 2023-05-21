@@ -60,3 +60,31 @@ describe('favoriteBlog', () => {
     expect(result).toBe(0)
   })
 })
+
+describe('most liked author', () => {
+  test('returns most liked author and amount of likes with many blogs', () => {
+    const blogs = listOfBlogs
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual(
+      {
+        author: "Robert C. Martin",
+        blogs: 3
+      }
+    )
+  })
+  test('returns most liked author with single blog', () => {
+    const blogs = singleBlog
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual(
+      {
+        author: "Michael Chan",
+        blogs: 1
+      }
+    )
+  })
+  test('returns 0 with empty array', () => {
+    const blogs = []
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toBe(0)
+  })
+})
