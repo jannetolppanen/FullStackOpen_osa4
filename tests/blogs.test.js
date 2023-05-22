@@ -89,9 +89,28 @@ test('blog with no value for likes get 0 likes', async () => {
     .send(blogWithNoLikes)
 
   expect(response.body['likes']).toBe(0)
-  console.log('response.body: ', response.body)
 
 })
+
+// test.only('blogpost without title returns 400', async () => {
+
+//   const blogWithoutTitle = {
+//     "author": "Olivia PaintBrush",
+//     "url": "https://www.artisticexplorations.com",
+//     "likes": 4
+// }
+
+// const blogWithoutUrl = {
+//   "title": "Fitness Fundamentals: Building A Healthy Lifestyle",
+//   "author": "Jackie JumpRope",
+//   "likes": 8
+// }
+//   await api
+//     .post('/api/blogs')
+//     .send(blogWithoutTitle)
+//     .expect(201)
+
+// })
 
 afterAll(async () => {
   await mongoose.connection.close()
