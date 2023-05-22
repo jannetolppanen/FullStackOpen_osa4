@@ -64,18 +64,33 @@ describe('.post request', () => {
     }
 
     await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('/api/blogs')
-  const contents = response.body.map(r => r.title)
-  expect(response.body).toHaveLength(initialBlogs.length + 1)
-  expect(contents).toContain(
-    'Astrophotography: Capturing the Universe'
-  )
+    const response = await api.get('/api/blogs')
+    const contents = response.body.map(r => r.title)
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(contents).toContain(
+      'Astrophotography: Capturing the Universe'
+    )
   })
+})
+
+test('blog with no value for likes get 0 likes', async () => {
+  const blogWithNoLikes = {
+    "title": "Culinary Creations: Unleash Your Inner Chef",
+    "author": "Gordon Breadknife",
+    "url": "https://www.kitchensavvy.com"
+  }
+  const response = await api
+    .post('/api/blogs')
+    .send(blogWithNoLikes)
+
+  expect(response.body['likes']).toBe(0)
+  console.log('response.body: ', response.body)
+
 })
 
 afterAll(async () => {
