@@ -19,6 +19,16 @@ test('length is 2', async () => {
   expect(response.body).toHaveLength(2)
 })
 
+test.only('id exists', async () => {
+  const response = await api
+    .get('/api/blogs')
+
+    response.body.map(blog => {
+      expect(blog.id).toBeDefined()
+    })
+
+})
+
 })
 
 afterAll(async () => {
