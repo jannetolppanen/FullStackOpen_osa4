@@ -92,25 +92,30 @@ test('blog with no value for likes get 0 likes', async () => {
 
 })
 
-// test.only('blogpost without title returns 400', async () => {
+test('blogpost without title or url returns 400', async () => {
 
-//   const blogWithoutTitle = {
-//     "author": "Olivia PaintBrush",
-//     "url": "https://www.artisticexplorations.com",
-//     "likes": 4
-// }
+  const blogWithoutTitle = {
+    "author": "Olivia PaintBrush",
+    "url": "https://www.artisticexplorations.com",
+    "likes": 4
+  }
 
-// const blogWithoutUrl = {
-//   "title": "Fitness Fundamentals: Building A Healthy Lifestyle",
-//   "author": "Jackie JumpRope",
-//   "likes": 8
-// }
-//   await api
-//     .post('/api/blogs')
-//     .send(blogWithoutTitle)
-//     .expect(201)
+  const blogWithoutUrl = {
+    "title": "Fitness Fundamentals: Building A Healthy Lifestyle",
+    "author": "Jackie JumpRope",
+    "likes": 8
+  }
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutTitle)
+    .expect(400)
 
-// })
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutUrl)
+    .expect(400)
+
+})
 
 afterAll(async () => {
   await mongoose.connection.close()
