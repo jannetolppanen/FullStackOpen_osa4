@@ -117,6 +117,22 @@ test('blogpost without title or url returns 400', async () => {
 
 })
 
+describe('delete request', () => {
+  test.only('deleting id removes it from server', async () => {
+    const blogs = await api
+      .get('/api/blogs')
+    const idToBeDeleted = blogs.body[0].id
+    console.log(`Deleting id ${idToBeDeleted}`)
+    await api
+      .delete(`/api/blogs/${idToBeDeleted}`)
+      .expect(204)
+    await api
+      .get(`/api/blogs/${idToBeDeleted}`)
+      .expect(404)
+
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })

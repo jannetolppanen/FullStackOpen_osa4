@@ -17,8 +17,6 @@ blogsRouter.post('/', async (request, response) => {
       .json({ error: 'title and url are required' })
   }
 
-
-
   const blog = new Blog({
     title: body.title,
     author: body.author,
@@ -31,5 +29,16 @@ blogsRouter.post('/', async (request, response) => {
     .status(201)
     .json(savedBlog)
 })
+
+blogsRouter.delete('/:id', async (request, response, next) => {
+  try {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } catch (exception) {
+    next(exception)
+  }
+}
+)
+
 
 module.exports = blogsRouter
