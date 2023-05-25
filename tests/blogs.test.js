@@ -118,17 +118,39 @@ test('blogpost without title or url returns 400', async () => {
 })
 
 describe('delete request', () => {
-  test.only('deleting id removes it from server', async () => {
+  test('deleting id removes it from server', async () => {
     const blogs = await api
       .get('/api/blogs')
     const idToBeDeleted = blogs.body[0].id
-    console.log(`Deleting id ${idToBeDeleted}`)
     await api
       .delete(`/api/blogs/${idToBeDeleted}`)
       .expect(204)
     await api
       .get(`/api/blogs/${idToBeDeleted}`)
       .expect(404)
+
+  })
+})
+
+describe.only('put request', () => {
+  test('updating the number of likes works', async () => {
+    const blogs = await api
+      .get('/api/blogs')
+    const blogToUpdate = blogs.body[0]
+    const idToUpdate = blogToUpdate.id
+    const updatedBlog = {
+      title: blogToUpdate.title,
+      author: blogToUpdate.author,
+      url: blogToUpdate.url,
+      likes: 1337
+    }
+    await api
+      .put(`/api/blogs/${idToUpdate}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect((response) => {
+        expect(response.body.likes).toBe(1337)
+      })
 
   })
 })
