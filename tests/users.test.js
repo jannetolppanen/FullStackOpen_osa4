@@ -27,23 +27,37 @@ beforeEach(async () => {
   await userObject.save()
 })
 
-
 describe('Creating users', () => {
 
   test('2 initial users are created', async () => {
     const response = await api
       .get('/api/users')
 
-    expect(response.body).toHaveLength(2)
+    expect(response.body).toHaveLength(initialUsers.length)
   })
 
-  test('Password and username must be atleast 3 characters', async () => {
+  test('Duplicate users cant be created', async () => {
 
-    const newUserShortUsername = {
-      "username": "te",
-      "name": "Test user4",
-      "password": "qwerty"
+    const duplicateUser = {
+      "username": "testuser1",
+      "name": "New name",
+      "password": "d123"
     }
+
+    const response = await api
+      .post('/api/users')
+      .send(duplicateUser)
+      .expect(400)
+
+      expect(response.body.error).toEqual(expect.stringContaining('User validation failed: username: Error'))
+
+    const getResponse = await api
+      .get('/api/users')
+
+    expect(getResponse.body).toHaveLength(initialUsers.length)
+  })
+
+  test('Password must be atleast 3 characters', async () => {
 
     const newUserShortPassword = {
       "username": "testuser5",
@@ -51,19 +65,35 @@ describe('Creating users', () => {
       "password": "qw"
     }
 
-    const createShortName = await api
-      .post('/api/users')
-      .send(newUserShortUsername)
-      .expect(400)
-
     const createShortPassword = await api
       .post('/api/users')
       .send(newUserShortPassword)
       .expect(400)
 
+    expect(createShortPassword.body.error).toEqual("Password needs to be atleast 3 characters")
+
     const getResponse = await api
       .get('/api/users')
-    expect(getResponse.body.length).toBe(initialUsers.length)    
+    expect(getResponse.body.length).toBe(initialUsers.length)
+  })
+
+  test('Username must be atleast 3 characters', async () => {
+
+    const newUserShortUsername = {
+      "username": "te",
+      "name": "Test user4",
+      "password": "qwerty"
+    }
+    const createShortName = await api
+      .post('/api/users')
+      .send(newUserShortUsername)
+      .expect(400)
+
+    expect(createShortName.body.error).toEqual("Username needs to be atleast 3 characters")
+
+    const getResponse = await api
+      .get('/api/users')
+    expect(getResponse.body.length).toBe(initialUsers.length)
   })
 
   test('A new user can be created', async () => {
@@ -78,9 +108,9 @@ describe('Creating users', () => {
       .send(newUser)
       .expect(201)
 
-      const getResponse = await api
+    const getResponse = await api
       .get('/api/users')
-    expect(getResponse.body.length).toBe(initialUsers.length +1)
+    expect(getResponse.body.length).toBe(initialUsers.length + 1)
   })
 
 
