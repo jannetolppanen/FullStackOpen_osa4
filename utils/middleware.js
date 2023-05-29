@@ -28,7 +28,6 @@ const errorHandler = (error, request, response, next) => {
   const userExtractor = (request, response, next) => {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
     request.user = decodedToken.username
-    logger.info(request.user)
 
     next()
   }
