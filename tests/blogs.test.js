@@ -132,7 +132,7 @@ describe('delete request', () => {
   })
 })
 
-describe.only('put request', () => {
+describe('put request', () => {
   test('updating the number of likes works', async () => {
     const blogs = await api
       .get('/api/blogs')
