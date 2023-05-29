@@ -1,6 +1,7 @@
 const morgan = require('morgan')
 const requestLogger = morgan('tiny')
 const logger = require('./logger')
+const jwt = require('jsonwebtoken')
 
 const errorHandler = (error, request, response, next) => {
     logger.error(error.message)
@@ -17,7 +18,6 @@ const errorHandler = (error, request, response, next) => {
   }
 
   const tokenExtractor = (request, response, next) => {
-    logger.info("tokenextractor called")
     const authorization = request.get('authorization')
     if (authorization && authorization.startsWith('Bearer ')) {
       request.token = authorization.replace('Bearer ', '')
@@ -25,8 +25,17 @@ const errorHandler = (error, request, response, next) => {
     next()
   }
 
+  const userExtractor = (request, response, next) => {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    request.user = decodedToken.username
+    logger.info(request.user)
+
+    next()
+  }
+
 module.exports = {
     requestLogger,
     errorHandler,
-    tokenExtractor
+    tokenExtractor,
+    userExtractor
 }
