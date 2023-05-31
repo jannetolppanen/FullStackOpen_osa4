@@ -27,13 +27,23 @@ beforeEach(async () => {
   await userObject.save()
 })
 
-describe('Creating users', () => {
+describe('User creation and login', () => {
 
   test('2 initial users are created', async () => {
     const response = await api
       .get('/api/users')
 
     expect(response.body).toHaveLength(initialUsers.length)
+  })
+
+  test('User login works', async () => {
+    const response = await api
+      .post('/api/login')
+      .send({
+        "username": "testuser1",
+        "password": "P@ssw0rd123"
+      })
+      .expect(200)
   })
 
   test('Duplicate users cant be created', async () => {
@@ -49,7 +59,7 @@ describe('Creating users', () => {
       .send(duplicateUser)
       .expect(400)
 
-      expect(response.body.error).toEqual(expect.stringContaining('User validation failed: username: Error'))
+    expect(response.body.error).toEqual(expect.stringContaining('User validation failed: username: Error'))
 
     const getResponse = await api
       .get('/api/users')
